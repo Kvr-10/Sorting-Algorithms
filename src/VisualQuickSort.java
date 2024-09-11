@@ -17,6 +17,7 @@ public class VisualQuickSort extends JFrame {
     private JButton mergeSort;
     private JPanel inputPanel;
     private JPanel sortingPanel;
+    // hello my name is khan
 
     public VisualQuickSort() {
         setTitle("Visual Quick Sort");
