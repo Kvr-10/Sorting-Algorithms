@@ -13,7 +13,9 @@ public class VisualInsertionSort extends JFrame {
     private JButton startButton;
     private JButton resetButton;
     private JButton infoButton;
+    private JButton howItWorksButton;
     private JButton back;
+    private JLabel currentElementLabel;
     private JPanel inputPanel;
     private JPanel sortingPanel;
     private int currentYOffset = 100; // Vertical offset for placing new sets of labels
@@ -21,7 +23,7 @@ public class VisualInsertionSort extends JFrame {
 
     public VisualInsertionSort() {
         setTitle("Visual Insertion Sort");
-        setSize(850, 600);
+        setSize(920, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -37,12 +39,15 @@ public class VisualInsertionSort extends JFrame {
         resetButton = new JButton("Reset");
         infoButton = new JButton("Show Info");
         back = new JButton("Back");
+        howItWorksButton = new JButton("How It Works");
+        currentElementLabel = new JLabel("Current Element: ", JLabel.CENTER);
 
         inputPanel = new JPanel();
         inputPanel.add(new JLabel("Enter numbers separated by commas:"));
         inputPanel.add(inputField);
         inputPanel.add(startButton);
         inputPanel.add(resetButton);
+        inputPanel.add(howItWorksButton);
         inputPanel.add(infoButton);
         inputPanel.add(back);
         add(inputPanel, BorderLayout.NORTH);
@@ -53,6 +58,9 @@ public class VisualInsertionSort extends JFrame {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(scrollPane, BorderLayout.CENTER);
+
+        currentElementLabel.setFont(new Font("Serif", Font.BOLD, 16));
+        add(currentElementLabel, BorderLayout.SOUTH);
     }
 
     private void setButtonActions() {
@@ -74,6 +82,8 @@ public class VisualInsertionSort extends JFrame {
         resetButton.addActionListener(e -> resetSorting());
 
         infoButton.addActionListener(e -> showInfoDialog());
+
+        howItWorksButton.addActionListener(e -> showHowItWorksDialog());
     }
 
     private boolean initializeArrayFromInput() {
@@ -133,6 +143,33 @@ public class VisualInsertionSort extends JFrame {
         JOptionPane.showMessageDialog(this, info, "Insertion Sort Info", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private void showHowItWorksDialog() {
+        String explanation = "<html><body>"
+                + "<h2>How Insertion Sort Works</h2>"
+                + "<p>Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time.</p>"
+                + "<p>The algorithm works as follows:</p>"
+                + "<ul>"
+                + "<li><strong>Initial Pass:</strong> The algorithm starts from the second element, comparing it with the elements before it.</li>"
+                + "<li><strong>Shifting:</strong> If the current element (key) is smaller than the compared elements,<br>"+ "those elements are shifted one position to the right to make space for the key.</li>"
+                + "<li><strong>Insertion:</strong> Once the correct position for the key is found, it is inserted into that position.</li>"
+                + "<li><strong>Repeat:</strong> This process repeats for each element in the array until the entire array is sorted.</li>"
+                + "</ul>"
+                + "<h3>About the Code:</h3>"
+                + "<p>The provided code visualizes the Insertion Sort algorithm by updating the graphical representation of the array after each insertion.</p>"
+                + "<p>Key elements in the code include:</p>"
+                + "<ul>"
+                + "<li><strong>Array Initialization:</strong> The input numbers are read from a text field and stored in an array.</li>"
+                + "<li><strong>Label Creation:</strong> For each element, a label is created to visually represent it in the GUI.</li>"
+                + "<li><strong>Sorting Process:</strong> The sorting logic is implemented in a separate thread to keep the GUI responsive.<br>"+ " Each step of the sorting process is visualized with a delay.</li>"
+                + "<li><strong>Color Indication:</strong> The current key being compared is highlighted in yellow, <br>"+ "while the sorted elements turn green upon completion.</li>"
+                + "</ul>"
+                + "<p>The visualization helps to understand how the algorithm processes the array and moves elements around until the array is sorted.</p>"
+                + "</body></html>";
+
+        JOptionPane.showMessageDialog(this, explanation, "How It Works", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
     private void startSorting() {
         new Thread(() -> {
             try {
@@ -149,27 +186,46 @@ public class VisualInsertionSort extends JFrame {
             int key = arr[i];
             int j = i - 1;
 
-            // Move elements of arr[0..i-1], that are greater than key, to one position ahead
-            // of their current position
+            // Highlight the current key being sorted
+            int finalI = i;
+            SwingUtilities.invokeLater(() -> {
+                labels[finalI].setBackground(Color.YELLOW); // Highlight the current element in yellow
+                currentElementLabel.setText("Current Element: " + key); // Update current element label
+            });
+            Thread.sleep(DELAY);
+
             while (j >= 0 && arr[j] > key) {
+                // Highlight the element being compared
+                final int currentJ = j; // capture `j` for use in lambda
+                SwingUtilities.invokeLater(() -> {
+                    labels[currentJ].setBackground(Color.ORANGE); // Compare element
+                    labels[finalI].setBackground(Color.YELLOW); // Keep key highlighted
+                });
+                Thread.sleep(DELAY);
+
                 arr[j + 1] = arr[j];
                 j = j - 1;
 
-                // Visualize the array at each step
+                // Update the array visualization at each step
                 final int[] currentArray = arr.clone();
-                final int currentI = i;
-                SwingUtilities.invokeLater(() -> {
-                    updateLabels();
-                    labels[currentI].setBackground(Color.YELLOW); // Highlight the current element
-                });
+                SwingUtilities.invokeLater(() -> updateLabels());
                 Thread.sleep(DELAY);
+
+                // Reset the compared element's color back to cyan
+                SwingUtilities.invokeLater(() -> labels[currentJ].setBackground(Color.CYAN));
             }
+
             arr[j + 1] = key;
 
-            SwingUtilities.invokeLater(() -> addLabels(arr.clone(), currentYOffset += BLOCK_SIZE + 10)); // Add new visualization after each step
+            // Re-add the labels after placing the key in the correct spot
+            SwingUtilities.invokeLater(() -> {
+                labels[finalI].setBackground(Color.CYAN); // Reset key color after placing
+                addLabels(arr.clone(), currentYOffset += BLOCK_SIZE + 10); // Move to new Y-offset for the next step
+            });
             Thread.sleep(DELAY);
         }
     }
+
 
     private void updateLabels() {
         SwingUtilities.invokeLater(() -> {
@@ -200,6 +256,7 @@ public class VisualInsertionSort extends JFrame {
     private void resetSorting() {
         inputField.setText("");
         sortingPanel.removeAll();
+        currentElementLabel.setText("Current Element: ");
         currentYOffset = 100; // Reset offset when resetting
         updateSortingPanelSize(); // Reset panel size when clearing content
         sortingPanel.revalidate();

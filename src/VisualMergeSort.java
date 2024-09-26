@@ -13,22 +13,24 @@ public class VisualMergeSort extends JFrame {
     private JButton startButton;
     private JButton infoButton;
     private JButton resetButton;
+    private JButton howItWorksButton;
     private JButton back;
     private JPanel inputPanel;
     private JPanel sortingPanel;
+    private JScrollPane scrollPane;
 
     public VisualMergeSort() {
         setTitle("Visual Merge Sort");
-        setSize(850, 400);
+        setSize(970, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        setVisible(true);
 
         // Set up the input field and buttons
         inputField = new JTextField(20);
         startButton = new JButton("Merge Sort");
         infoButton = new JButton("Show Info");
+        howItWorksButton = new JButton("How It Works");
         resetButton = new JButton("Reset");
         back = new JButton("Back");
         inputPanel = new JPanel();
@@ -36,14 +38,19 @@ public class VisualMergeSort extends JFrame {
         inputPanel.add(inputField);
         inputPanel.add(startButton);
         inputPanel.add(resetButton);
+        inputPanel.add(howItWorksButton);
         inputPanel.add(infoButton);
         inputPanel.add(back);
         add(inputPanel, BorderLayout.NORTH);
 
-        // Set up the sorting panel
+        // Set up the sorting panel and scroll pane
         sortingPanel = new JPanel();
         sortingPanel.setLayout(null);
-        add(sortingPanel, BorderLayout.CENTER);
+        sortingPanel.setPreferredSize(new Dimension(800, 100)); // Initial height, will adjust dynamically
+
+        scrollPane = new JScrollPane(sortingPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        add(scrollPane, BorderLayout.CENTER);
 
         // Set up the start button action
         startButton.addActionListener(new ActionListener() {
@@ -88,6 +95,7 @@ public class VisualMergeSort extends JFrame {
                 resetSorting();
             }
         });
+        howItWorksButton.addActionListener(e -> showHowItWorksDialog());
 
         back.addActionListener(new ActionListener() {
             @Override
@@ -97,6 +105,8 @@ public class VisualMergeSort extends JFrame {
                 setVisible(false);
             }
         });
+
+        setVisible(true);
     }
 
     private void showInfoDialog() {
@@ -119,6 +129,37 @@ public class VisualMergeSort extends JFrame {
         JOptionPane.showMessageDialog(this, info, "Merge Sort Info", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private void showHowItWorksDialog() {
+        String explanation = "<html><body>"
+                + "<h2>How Merge Sort Works</h2>"
+                + "<p>Merge Sort is a divide-and-conquer sorting algorithm that efficiently sorts elements by dividing the array into halves,<br>"
+                + "recursively sorting each half, and then merging the sorted halves back together.</p>"
+                + "<p>The algorithm follows these steps:</p>"
+                + "<ul>"
+                + "<li><strong>Divide:</strong> The array is recursively divided into two halves until each sub-array contains a single element.</li>"
+                + "<li><strong>Conquer:</strong> Each sub-array is sorted recursively.</li>"
+                + "<li><strong>Merge:</strong> The sorted sub-arrays are merged back together to form a single sorted array.</li>"
+                + "<li><strong>Base Case:</strong> The recursion terminates when the sub-array has one or no elements, which is inherently sorted.</li>"
+                + "</ul>"
+                + "<h3>About the Code:</h3>"
+                + "<p>The provided code visualizes the Merge Sort algorithm by updating the graphical representation of the array during the sorting process.<br>"
+                + "Key elements in the code include:</p>"
+                + "<ul>"
+                + "<li><strong>Array Initialization:</strong> The input numbers are read from a text field and stored in an array.</li>"
+                + "<li><strong>Label Creation:</strong> For each element, a label is created to visually represent it in the GUI.</li>"
+                + "<li><strong>Sorting Process:</strong> The sorting logic is implemented in a separate thread to keep the GUI responsive.<br>"
+                + "Each step of the sorting process is visualized with a delay, showing both the division and merging phases.</li>"
+                + "<li><strong>Color Indication:</strong> During the merging process, the current elements being merged are highlighted in yellow,<br>"
+                + "while sorted elements turn green upon completion.</li>"
+                + "</ul>"
+                + "<p>This visualization helps users understand how the Merge Sort algorithm processes the array,<br>"
+                + "by clearly showing the recursive division and the merging of elements until the array is fully sorted.</p>"
+                + "</body></html>";
+
+        JOptionPane.showMessageDialog(this, explanation, "How It Works", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
     public void startSorting() {
         new Thread(() -> {
             try {
@@ -134,18 +175,16 @@ public class VisualMergeSort extends JFrame {
         if (left < right) {
             int mid = (left + right) / 2;
 
-            // Display the array with blocks shifted above/below
-            displayDivision(left, right, depth);
+            // Display the breaking phase (division of subarrays)
+            displayDivision(left, right, depth);  // This moves the subarray down
 
             // Recursively sort the two halves
             mergeSort(arr, left, mid, depth + 1);
             mergeSort(arr, mid + 1, right, depth + 1);
 
             // Merge the sorted halves
+            displayMerging(left, right, depth); // Show the merging phase
             merge(arr, left, mid, right);
-
-            // Reset position after merge
-            resetLabels();
         }
     }
 
@@ -190,68 +229,77 @@ public class VisualMergeSort extends JFrame {
     }
 
     private void updateLabels() {
-        int panelWidth = sortingPanel.getWidth();
-        int totalBlocksWidth = array.length * BLOCK_SIZE;
-        int startX = (panelWidth - totalBlocksWidth) / 2;
+        SwingUtilities.invokeLater(() -> {
+            int panelWidth = sortingPanel.getWidth();
+            int totalBlocksWidth = array.length * BLOCK_SIZE;
+            int startX = (panelWidth - totalBlocksWidth) / 2;
 
-        for (int i = 0; i < array.length; i++) {
-            labels[i].setBounds(startX + i * BLOCK_SIZE, labels[i].getY(), BLOCK_SIZE, BLOCK_SIZE);
-            labels[i].setText(String.valueOf(array[i])); // Update text
-        }
-        sortingPanel.revalidate();
-        sortingPanel.repaint();
+            for (int i = 0; i < array.length; i++) {
+                labels[i].setBounds(startX + i * BLOCK_SIZE, labels[i].getY(), BLOCK_SIZE, BLOCK_SIZE);
+                labels[i].setText(String.valueOf(array[i])); // Update text
+            }
+            sortingPanel.revalidate();
+            sortingPanel.repaint();
+        });
     }
 
     private void displayDivision(int left, int right, int depth) throws InterruptedException {
-        int offset = depth * 60; // Move blocks further with increasing depth
-        int panelWidth = sortingPanel.getWidth();
-        int totalBlocksWidth = array.length * BLOCK_SIZE;
-        int startX = (panelWidth - totalBlocksWidth) / 2;
+        SwingUtilities.invokeLater(() -> {
+            int offset = depth * 60; // Move blocks further with increasing depth for breaking
+            int panelWidth = sortingPanel.getWidth();
+            int totalBlocksWidth = array.length * BLOCK_SIZE;
+            int startX = (panelWidth - totalBlocksWidth) / 2;
 
-        for (int i = 0; i < array.length; i++) {
-            if (i >= left && i <= right) {
+            for (int i = left; i <= right; i++) {
                 labels[i].setBounds(startX + i * BLOCK_SIZE, 100 + offset, BLOCK_SIZE, BLOCK_SIZE);
-            } else {
-                labels[i].setBounds(startX + i * BLOCK_SIZE, 100, BLOCK_SIZE, BLOCK_SIZE);
             }
-        }
-        sortingPanel.revalidate();
-        sortingPanel.repaint();
+
+            // Dynamically adjust sorting panel height for deeper levels of recursion
+            int newHeight = (depth + 3) * 60 + 200; // Added 200 to keep space for initial blocks
+            sortingPanel.setPreferredSize(new Dimension(panelWidth, newHeight));
+            sortingPanel.revalidate();
+            sortingPanel.repaint();
+        });
         Thread.sleep(DELAY);
     }
 
-    private void resetLabels() {
-        int panelWidth = sortingPanel.getWidth();
-        int totalBlocksWidth = array.length * BLOCK_SIZE;
-        int startX = (panelWidth - totalBlocksWidth) / 2;
+    private void displayMerging(int left, int right, int depth) throws InterruptedException {
+        SwingUtilities.invokeLater(() -> {
+            int offset = (depth + 1) * 60 + 100; // Move the merging subarrays lower than breaking phase
+            int panelWidth = sortingPanel.getWidth();
+            int totalBlocksWidth = array.length * BLOCK_SIZE;
+            int startX = (panelWidth - totalBlocksWidth) / 2;
 
+            // Display subarrays
+            for (int i = left; i <= right; i++) {
+                labels[i].setBounds(startX + i * BLOCK_SIZE, offset, BLOCK_SIZE, BLOCK_SIZE);
+            }
+
+            // Dynamically adjust sorting panel height for merging
+            int newHeight = offset + 60 + 100; // Added space for merging
+            sortingPanel.setPreferredSize(new Dimension(panelWidth, newHeight));
+            sortingPanel.revalidate();
+            sortingPanel.repaint();
+        });
+        Thread.sleep(DELAY);
+    }
+
+    private void highlightSorted() throws InterruptedException {
         for (int i = 0; i < array.length; i++) {
-            labels[i].setBounds(startX + i * BLOCK_SIZE, 100, BLOCK_SIZE, BLOCK_SIZE);
-        }
-        sortingPanel.revalidate();
-        sortingPanel.repaint();
-    }
-
-    private void highlightSorted() {
-        for (JLabel label : labels) {
-            label.setBackground(Color.GREEN);
+            labels[i].setBackground(Color.GREEN); // Highlight sorted elements
+            updateLabels();
+            Thread.sleep(DELAY);
         }
     }
 
-    // Reset the sorting panel and input field
     private void resetSorting() {
         sortingPanel.removeAll();
+        inputField.setText("");
         sortingPanel.revalidate();
         sortingPanel.repaint();
-        inputField.setText("");
-        array = null;
-        labels = null;
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            VisualMergeSort frame = new VisualMergeSort();
-            frame.setVisible(true);
-        });
+        SwingUtilities.invokeLater(VisualMergeSort::new);
     }
 }
