@@ -41,8 +41,8 @@ Ensure you have Java installed on your system. You can download and install the 
 - **Data Visualization**: Real-time visualization of sorting processes for better understanding.
 
 ## Contributing
-I welcome contributions to improve the application! Feel free to open issues and submit pull requests.
+we welcome contributions to improve the application! Feel free to open issues and submit pull requests.
 
 ## Contact
-If you have any questions or feedback, please reach out to us at chamansinha9480@gmail.com.
+If you have any questions or feedback, please raise an issue.
 
