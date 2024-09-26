@@ -20,7 +20,7 @@ body {
 }
 
 header {
-    background-color: #2557a3;
+    background: linear-gradient(to right, #1c1c1c, #2557a3);
     color: #fff;
     padding: 20px 0;
     text-align: center;
@@ -30,19 +30,15 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .header-img {
-    width: 100px;
-    height: 100px;
-    max-width: 100%;
+    width: 80px;
+    height: 80px;
 }
 
 h1 {
-    margin: 0;
+    margin: 10px 0;
     font-size: 2.5em;
 }
 
@@ -50,9 +46,6 @@ h1 {
     overflow: hidden;
     position: relative;
     padding: 10px 0;
-    height: 60px;
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .marquee {
@@ -60,18 +53,15 @@ h1 {
     white-space: nowrap;
     padding-left: 100%;
     animation: marquee 15s linear infinite;
-    color: #fff;
+    color: #ffdd57;
     font-size: 1.2em;
 }
 
 @keyframes marquee {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
 }
+
 
 h2 {
     border-bottom: 2px solid #0553a0;
@@ -257,18 +247,34 @@ footer {
     background-color: #2557a3;
     color: #fff;
     text-align: center;
-    padding: 10px 0;
+    padding: 20px 0;
+    position: relative;
+}
+
+.contacts {
+    display: flex;
+    justify-content: space-around; /* Distributes items evenly */
+    flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+    margin-top: 15px;
+}
+
+.contact-item {
+    margin: 10px;
+    max-width: 150px; /* Ensures each item doesn't grow too wide */
 }
 
 footer a {
     color: #fff;
-    text-decoration: underline;
+    text-decoration: none;
+    margin: 5px 0;
 }
 
 footer a:hover {
-    color: #ffdd57;
-    text-decoration: none;
+    text-decoration: underline;
 }
+
+
+
 
 @media (max-width: 768px) {
     .container {
