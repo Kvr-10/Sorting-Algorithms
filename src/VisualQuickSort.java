@@ -22,12 +22,15 @@ public class VisualQuickSort extends JFrame {
     private JScrollPane scrollPane;
 
     public VisualQuickSort() {
-        setTitle("Visual Quick Sort");
+        setTitle("VizNum - Quick Sort");
+        ImageIcon frameIcon = new ImageIcon(ClassLoader.getSystemResource("Icon/sorting-6.png"));
+        setIconImage(frameIcon.getImage());
         setSize(970, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         setVisible(true);
+        setResizable(false);
 
         initializeComponents();
         setButtonActions();
@@ -37,10 +40,16 @@ public class VisualQuickSort extends JFrame {
         inputField = new JTextField(20);
         startButton = new JButton("Quick Sort");
         resetButton = new JButton("Reset");
-        infoButton = new JButton("Show Info");
+        infoButton = new JButton("Time Complexity");
         howItWorksButton = new JButton("How It Works");
         back = new JButton("Back");
         pivotLabel = new JLabel("Pivot: ", JLabel.CENTER);
+
+        startButton.setToolTipText("Start the sorting process using the Quick Sort algorithm.");
+        resetButton.setToolTipText("Reset the input field and clear the visualization to start over.");
+        infoButton.setToolTipText("View the time and space complexity of the Quick Sort algorithm.");
+        howItWorksButton.setToolTipText("Learn how the Quick Sort algorithm works step by step.");
+        back.setToolTipText("Return to the main menu.");
 
         inputPanel = new JPanel();
         inputPanel.add(new JLabel("Enter numbers separated by commas:"));
