@@ -3,6 +3,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 
 public class VisualInsertionSort extends JFrame {
     private static final int BLOCK_SIZE = 50;
@@ -20,14 +22,20 @@ public class VisualInsertionSort extends JFrame {
     private JPanel sortingPanel;
     private int currentYOffset = 100; // Vertical offset for placing new sets of labels
     private JScrollPane scrollPane;
+    private Voice currentVoice = null;
 
     public VisualInsertionSort() {
-        setTitle("Visual Insertion Sort");
-        setSize(920, 600);
+        setTitle("VizNum - Insertion Sort");
+        ImageIcon frameIcon = new ImageIcon(ClassLoader.getSystemResource("Icon/sorting-6.png"));
+        setIconImage(frameIcon.getImage());
+        setSize(970, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         setVisible(true);
+        setResizable(false);
+
+
 
         initializeComponents();
         setButtonActions();
@@ -37,10 +45,16 @@ public class VisualInsertionSort extends JFrame {
         inputField = new JTextField(20);
         startButton = new JButton("Insertion Sort");
         resetButton = new JButton("Reset");
-        infoButton = new JButton("Show Info");
+        infoButton = new JButton("Time Complexity");
         back = new JButton("Back");
         howItWorksButton = new JButton("How It Works");
         currentElementLabel = new JLabel("Current Element: ", JLabel.CENTER);
+
+        startButton.setToolTipText("Start the sorting process using the Insertion Sort algorithm.");
+        resetButton.setToolTipText("Reset the input field and clear the visualization to start over.");
+        infoButton.setToolTipText("View the time and space complexity of the Insertion Sort algorithm.");
+        howItWorksButton.setToolTipText("Learn how the Insertion Sort algorithm works step by step.");
+        back.setToolTipText("Return to the main menu.");
 
         inputPanel = new JPanel();
         inputPanel.add(new JLabel("Enter numbers separated by commas:"));
@@ -150,7 +164,7 @@ public class VisualInsertionSort extends JFrame {
                 + "<p>The algorithm works as follows:</p>"
                 + "<ul>"
                 + "<li><strong>Initial Pass:</strong> The algorithm starts from the second element, comparing it with the elements before it.</li>"
-                + "<li><strong>Shifting:</strong> If the current element (key) is smaller than the compared elements,<br>"+ "those elements are shifted one position to the right to make space for the key.</li>"
+                + "<li><strong>Shifting:</strong> If the current element (key) is smaller than the compared elements,<br> those elements are shifted one position to the right to make space for the key.</li>"
                 + "<li><strong>Insertion:</strong> Once the correct position for the key is found, it is inserted into that position.</li>"
                 + "<li><strong>Repeat:</strong> This process repeats for each element in the array until the entire array is sorted.</li>"
                 + "</ul>"
@@ -160,14 +174,49 @@ public class VisualInsertionSort extends JFrame {
                 + "<ul>"
                 + "<li><strong>Array Initialization:</strong> The input numbers are read from a text field and stored in an array.</li>"
                 + "<li><strong>Label Creation:</strong> For each element, a label is created to visually represent it in the GUI.</li>"
-                + "<li><strong>Sorting Process:</strong> The sorting logic is implemented in a separate thread to keep the GUI responsive.<br>"+ " Each step of the sorting process is visualized with a delay.</li>"
-                + "<li><strong>Color Indication:</strong> The current key being compared is highlighted in yellow, <br>"+ "while the sorted elements turn green upon completion.</li>"
+                + "<li><strong>Sorting Process:</strong> The sorting logic is implemented in a separate thread to keep the GUI responsive.<br> Each step of the sorting process is visualized with a delay.</li>"
+                + "<li><strong>Color Indication:</strong> The current key being compared is highlighted in yellow,<br> while the sorted elements turn green upon completion.</li>"
                 + "</ul>"
                 + "<p>The visualization helps to understand how the algorithm processes the array and moves elements around until the array is sorted.</p>"
                 + "</body></html>";
 
+        String explanationText = "How Insertion Sort Works. Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time. "
+
+                + "The algorithm starts from the second element, comparing it with the elements before it. "
+                + "If the current element, called the key, is smaller than the compared elements, those elements are shifted one position to the right to make space for the key. "
+                + "Once the correct position is found, the key is inserted. "
+                + "This process repeats for each element until the entire array is sorted. "
+                + "The visualization updates the graphical representation after each insertion step.";
+
+        // Start speech in a new thread so that it begins immediately
+        Thread speechThread = new Thread(() -> speakText(explanationText));
+        speechThread.start();
+
+        // Show the modal dialog; this blocks until the user presses OK
         JOptionPane.showMessageDialog(this, explanation, "How It Works", JOptionPane.INFORMATION_MESSAGE);
+
+        // When the dialog is dismissed, cancel the speech if it's still in progress
+        if (currentVoice != null && currentVoice.getAudioPlayer() != null) {
+            currentVoice.getAudioPlayer().cancel();
+        }
     }
+
+    private void speakText(String text) {
+        // Specify only the Kevin voice directory to avoid casting issues
+        System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+        currentVoice = VoiceManager.getInstance().getVoice("kevin16");
+        if (currentVoice != null) {
+            currentVoice.allocate();
+            currentVoice.setRate(150);   // Speed (default ~160)
+            currentVoice.setPitch(100);  // Adjust pitch
+            currentVoice.setVolume(1.0f); // Volume (0.0 - 1.0)
+            currentVoice.speak(text);
+            currentVoice.deallocate();
+        } else {
+            System.err.println("Voice not found!");
+        }
+    }
+
 
 
     private void startSorting() {
@@ -241,9 +290,13 @@ public class VisualInsertionSort extends JFrame {
     }
 
     private void highlightSorted() {
-        for (JLabel label : labels) {
-            label.setBackground(Color.GREEN);
-        }
+        SwingUtilities.invokeLater(() -> {
+            for (JLabel label : labels) {
+                label.setBackground(Color.GREEN);
+            }
+
+            currentElementLabel.setText("");
+        });
     }
 
     private void updateSortingPanelSize() {
