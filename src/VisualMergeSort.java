@@ -3,6 +3,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 
 public class VisualMergeSort extends JFrame {
     private static final int BLOCK_SIZE = 50;
@@ -19,6 +21,7 @@ public class VisualMergeSort extends JFrame {
     private JPanel inputPanel;
     private JPanel sortingPanel;
     private JScrollPane scrollPane;
+    private Voice currentVoice = null;
 
     public VisualMergeSort() {
         setTitle("VizNum - Merge Sort");
@@ -188,8 +191,44 @@ public class VisualMergeSort extends JFrame {
                 + "by clearly showing the recursive division and the merging of elements until the array is fully sorted.</p>"
                 + "</body></html>";
 
+        String explanationText = "How Merge Sort Works.Merge Sort is a divide-and-conquer sorting algorithm that efficiently sorts elements by dividing the array into halves, "
+
+                + "recursively sorting each half, and then merging the sorted halves back together. "
+                + "The algorithm follows these steps: "
+                + "Divide:The array is recursively divided into two halves until each sub-array contains a single element. "
+                + "Conquer:Each sub-array is sorted recursively. "
+                + "Merge:The sorted sub-arrays are merged back together to form a single sorted array."
+                +"Base Case:The recursion terminates when the sub-array has one or no elements, which is inherently sorted."
+                +"The provided code visualizes the Merge Sort algorithm by updating the graphical representation of the array during the sorting process. ";
+
+        // Start speech in a new thread so that it begins immediately
+        Thread speechThread = new Thread(() -> speakText(explanationText));
+        speechThread.start();
+
+        // When the dialog is dismissed, cancel the speech if it's still in progress
+
         JOptionPane.showMessageDialog(this, explanation, "How It Works", JOptionPane.INFORMATION_MESSAGE);
+
+        if (currentVoice != null && currentVoice.getAudioPlayer() != null) {
+            currentVoice.getAudioPlayer().cancel();
     }
+}
+
+private void speakText(String text) {
+    // Specify only the Kevin voice directory to avoid casting issues
+    System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+    currentVoice = VoiceManager.getInstance().getVoice("kevin16");
+    if (currentVoice != null) {
+        currentVoice.allocate();
+        currentVoice.setRate(150);   // Speed (default ~160)
+        currentVoice.setPitch(100);  // Adjust pitch
+        currentVoice.setVolume(1.0f); // Volume (0.0 - 1.0)
+        currentVoice.speak(text);
+        currentVoice.deallocate();
+    } else {
+        System.err.println("Voice not found!");
+    }
+}
 
 
     public void startSorting() {
