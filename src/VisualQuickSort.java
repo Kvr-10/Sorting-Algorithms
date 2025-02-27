@@ -3,6 +3,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 
 public class VisualQuickSort extends JFrame {
     private static final int BLOCK_SIZE = 50;
@@ -20,6 +22,7 @@ public class VisualQuickSort extends JFrame {
     private JPanel sortingPanel;
     private int currentYOffset = 100; // Vertical offset for placing new sets of labels
     private JScrollPane scrollPane;
+    private Voice currentVoice = null;
 
     public VisualQuickSort() {
         setTitle("VizNum - Quick Sort");
@@ -178,8 +181,42 @@ public class VisualQuickSort extends JFrame {
                 + "</ul>"
                 + "<p>The visualization helps to understand how the algorithm processes the array and organizes elements around the pivot until the array is sorted.</p>"
                 + "</body></html>";
+        String explanationText = "How Quick Sort Works.Quick Sort is a highly efficient sorting algorithm that uses a divide-and-conquer approach to sort elements."
+                + "It works by selecting a 'pivot' element from the array and partitioning the other elements into two sub-arrays,"
+                + "according to whether they are less than or greater than the pivot. "
+                + "The algorithm follows these steps:"
+                + "Choose a Pivot: Select an element from the array to be the pivot. In this implementation, the last element is chosen as the pivot."
+                + "Partitioning: Reorder the array so that all elements with values less than the pivot come before it,"
+                + "and all elements with values greater than the pivot come after it."
+                + "Recursive Sorting: Recursively apply the above steps to the sub-arrays formed by the partitioning."
+                + "Base Case: The recursion terminates when the sub-array has fewer than two elements."
+                + "The provided code visualizes the Quick Sort algorithm by updating the graphical representation of the array after each partition. "; 
+                
+        // Start speech in a new thread so that it begins immediately
+        Thread speechThread = new Thread(() -> speakText(explanationText));
+        speechThread.start();
 
         JOptionPane.showMessageDialog(this, explanation, "How It Works", JOptionPane.INFORMATION_MESSAGE);
+        // When the dialog is dismissed, cancel the speech if it's still in progress
+        if (currentVoice != null && currentVoice.getAudioPlayer() != null) {
+            currentVoice.getAudioPlayer().cancel();
+        }
+    }
+
+    private void speakText(String text) {
+        // Specify only the Kevin voice directory to avoid casting issues
+        System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+        currentVoice = VoiceManager.getInstance().getVoice("kevin16");
+        if (currentVoice != null) {
+            currentVoice.allocate();
+            currentVoice.setRate(150);   // Speed (default ~160)
+            currentVoice.setPitch(100);  // Adjust pitch
+            currentVoice.setVolume(1.0f); // Volume (0.0 - 1.0)
+            currentVoice.speak(text);
+            currentVoice.deallocate();
+        } else {
+            System.err.println("Voice not found!");
+        }
     }
 
     private void startSorting() {
