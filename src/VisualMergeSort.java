@@ -31,8 +31,7 @@ public class VisualMergeSort extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-
-        // Set up the input field and buttons
+        
         inputField = new JTextField(20);
         startButton = new JButton("Merge Sort");
         infoButton = new JButton("Time Complexity");
