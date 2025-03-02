@@ -8,7 +8,7 @@ import com.sun.speech.freetts.VoiceManager;
 
 public class VisualMergeSort extends JFrame {
     private static final int BLOCK_SIZE = 50;
-    private static final int DELAY = 500; // milliseconds
+    private static final int DELAY = 500; 
     private int[] array;
     private int maxDepth;
     private JLabel[] labels;
