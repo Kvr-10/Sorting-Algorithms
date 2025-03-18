@@ -22,7 +22,7 @@ Double-click on `Sortings.jar` to start the sorting visualization.
 
 ## Alternative
 You can directly download the JAR file from the [Releases page](https://github.com/Kvr-10/Sorting-Algorithms/releases/latest) and run it.  
-Download [Quiz-Application](https://github.com/Kvr-10/Sorting-Algorithms/releases/latest/download/Sortings.jar) game.
+Download [Sorting algorithm](https://github.com/Kvr-10/Sorting-Algorithms/releases/latest/download/Sortings.jar) game.
 
 ## Prerequisites
 Ensure you have Java installed on your system. You can download and install the latest version of Java from the [official website](https://www.java.com/en/).

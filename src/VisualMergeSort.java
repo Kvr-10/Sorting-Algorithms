@@ -8,7 +8,7 @@ import com.sun.speech.freetts.VoiceManager;
 
 public class VisualMergeSort extends JFrame {
     private static final int BLOCK_SIZE = 50;
-    private static final int DELAY = 500; // milliseconds
+    private static final int DELAY = 500; 
     private int[] array;
     private int maxDepth;
     private JLabel[] labels;
@@ -31,8 +31,7 @@ public class VisualMergeSort extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-
-        // Set up the input field and buttons
+        
         inputField = new JTextField(20);
         startButton = new JButton("Merge Sort");
         infoButton = new JButton("Time Complexity");
