@@ -11,6 +11,8 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+Viznum Installer/config
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

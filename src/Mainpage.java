@@ -4,20 +4,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Mainpage extends JFrame implements ActionListener {
-    private JButton qk, mrq, is, aboutUs;
+    private JButton qk, mrq, is, bs, aboutUs; // Added bs (Bubble Sort) button
 
     public Mainpage() {
         // Initialize the buttons
         qk = new JButton("Quick Sort");
         mrq = new JButton("Merge Sort");
         is = new JButton("Insertion Sort");
+        bs = new JButton("Bubble Sort"); // Initialize Bubble Sort button
         aboutUs = new JButton("About Us");
 
         qk.setToolTipText("Divide and Conquer: Partitions array around a pivot.");
         mrq.setToolTipText("Divide and Conquer: Divides the array and merges sorted halves.");
         is.setToolTipText("A simple sorting algorithm that builds the final sorted array one item at a time.");
+        bs.setToolTipText("Repeatedly compares adjacent elements and swaps them if they are in the wrong order.");
         aboutUs.setToolTipText("Learn more about the developers.");
-
 
         setTitle("VizNum");
         ImageIcon frameIcon = new ImageIcon(ClassLoader.getSystemResource("Icon/sorting-6.png"));
@@ -63,6 +64,11 @@ public class Mainpage extends JFrame implements ActionListener {
         qk.setForeground(Color.white);
         qk.addActionListener(this);
 
+        bs.setBounds(530, 295, 120, 22); // Set bounds for Bubble Sort button
+        bs.setBackground(new Color(0xC5BE67));
+        bs.setForeground(Color.white);
+        bs.addActionListener(this);
+
         aboutUs.setBounds(675, 330, 100, 21);
         aboutUs.setBackground(new Color(0x0E90BA));
         aboutUs.setForeground(Color.white);
@@ -72,7 +78,7 @@ public class Mainpage extends JFrame implements ActionListener {
         add(qk);
         add(is);
         add(mrq);
-
+        add(bs); // Add Bubble Sort button
         add(aboutUs);
 
         // Add description labels (taglines) under each algorithm button
@@ -91,7 +97,12 @@ public class Mainpage extends JFrame implements ActionListener {
         qkDesc.setFont(new Font("Serif", Font.ITALIC, 10));
         add(qkDesc);
 
-        JLabel version = new JLabel("Version: 3.0.1.1", JLabel.CENTER);
+        JLabel bsDesc = new JLabel("Repeatedly compares and swaps", JLabel.CENTER); // Bubble Sort description
+        bsDesc.setBounds(515, 315, 150, 15);
+        bsDesc.setFont(new Font("Serif", Font.ITALIC, 10));
+        add(bsDesc);
+
+        JLabel version = new JLabel("Version: 4.0.0.1", JLabel.CENTER);
         version.setBounds(400, 340, 120, 15);
         version.setFont(new Font("Serif", Font.PLAIN, 13));
         add(version);
@@ -119,6 +130,10 @@ public class Mainpage extends JFrame implements ActionListener {
             // Open the Insertion Sort visualizer and hide the main page
             new VisualInsertionSort();
             setVisible(false);
+        } else if (e.getSource() == bs) {
+            // Open the Bubble Sort visualizer and hide the main page
+            new VisualBubbleSort();
+            setVisible(false);
         } else if (e.getSource() == aboutUs) {
             // Display 'About Us' information using JOptionPane
             String message = "Developed By:\n"
@@ -127,9 +142,9 @@ public class Mainpage extends JFrame implements ActionListener {
                     + "           Sanjana Ghadge\n"
                     + "           Sneha Bansal\n\n"
                     + "Under the guidance of:\n"
-                    +"        Prof. Sheetal Patil\n"
-                    +"        Bharati Vidyapeeth,\n"
-                    +"        College of Engineering,Pune\n\n"
+                    + "        Prof. Sheetal Patil\n"
+                    + "        Bharati Vidyapeeth,\n"
+                    + "        College of Engineering,Pune\n\n"
                     + "Reach us at:\n"
                     + "          viznum2025@gmail.com\n";
 
