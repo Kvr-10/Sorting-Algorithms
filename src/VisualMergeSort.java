@@ -3,11 +3,14 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 
 public class VisualMergeSort extends JFrame {
     private static final int BLOCK_SIZE = 50;
-    private static final int DELAY = 500; // milliseconds
+    private static final int DELAY = 500;
     private int[] array;
+    private int maxDepth;
     private JLabel[] labels;
     private JTextField inputField;
     private JButton startButton;
@@ -18,21 +21,30 @@ public class VisualMergeSort extends JFrame {
     private JPanel inputPanel;
     private JPanel sortingPanel;
     private JScrollPane scrollPane;
+    private Voice currentVoice = null;
 
     public VisualMergeSort() {
-        setTitle("Visual Merge Sort");
+        setTitle("VizNum - Merge Sort");
+        ImageIcon frameIcon = new ImageIcon(ClassLoader.getSystemResource("Icon/sorting-6.png"));
+        setIconImage(frameIcon.getImage());
         setSize(970, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Set up the input field and buttons
         inputField = new JTextField(20);
         startButton = new JButton("Merge Sort");
-        infoButton = new JButton("Show Info");
+        infoButton = new JButton("Time Complexity");
         howItWorksButton = new JButton("How It Works");
         resetButton = new JButton("Reset");
         back = new JButton("Back");
+
+        startButton.setToolTipText("Start the sorting process using the Merge Sort algorithm.");
+        resetButton.setToolTipText("Reset the input field and clear the visualization to start over.");
+        infoButton.setToolTipText("View the time and space complexity of the Merge Sort algorithm.");
+        howItWorksButton.setToolTipText("Learn how the Merge Sort algorithm works step by step.");
+        back.setToolTipText("Return to the main menu.");
+
         inputPanel = new JPanel();
         inputPanel.add(new JLabel("Enter numbers separated by commas:"));
         inputPanel.add(inputField);
@@ -56,29 +68,50 @@ public class VisualMergeSort extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String input = inputField.getText();
+                String input = inputField.getText().trim();
+                if (input.isEmpty()) {
+                    JOptionPane.showMessageDialog(VisualMergeSort.this,
+                            "Please enter valid numbers separated by commas.",
+                            "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 String[] inputNumbers = input.split(",");
                 array = new int[inputNumbers.length];
                 labels = new JLabel[inputNumbers.length];
+
+                maxDepth = (int) Math.ceil(Math.log(array.length) / Math.log(2));
+
+                sortingPanel.removeAll();
+                addLevelLabels();
 
                 int panelWidth = sortingPanel.getWidth();
                 int totalBlocksWidth = inputNumbers.length * BLOCK_SIZE;
                 int startX = (panelWidth - totalBlocksWidth) / 2;
 
-                for (int i = 0; i < inputNumbers.length; i++) {
-                    array[i] = Integer.parseInt(inputNumbers[i].trim());
-                    labels[i] = new JLabel(String.valueOf(array[i]), SwingConstants.CENTER);
-                    labels[i].setOpaque(true);
-                    labels[i].setBackground(Color.CYAN);
-                    labels[i].setBorder(new LineBorder(Color.BLACK)); // Add border to each block
-                    labels[i].setBounds(startX + i * BLOCK_SIZE, 100, BLOCK_SIZE, BLOCK_SIZE);
-                    sortingPanel.add(labels[i]);
+                try {
+                    for (int i = 0; i < inputNumbers.length; i++) {
+                        array[i] = Integer.parseInt(inputNumbers[i].trim());
+                        labels[i] = new JLabel(String.valueOf(array[i]), SwingConstants.CENTER);
+                        labels[i].setOpaque(true);
+                        labels[i].setBackground(Color.CYAN);
+                        labels[i].setBorder(new LineBorder(Color.BLACK)); // Add border to each block
+                        labels[i].setBounds(startX + i * BLOCK_SIZE, 100, BLOCK_SIZE, BLOCK_SIZE);
+                        sortingPanel.add(labels[i]);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(VisualMergeSort.this,
+                            "Please enter valid numbers separated by commas.",
+                            "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 sortingPanel.revalidate();
                 sortingPanel.repaint();
                 startSorting();
             }
         });
+
 
         // Set up the info button action
         infoButton.addActionListener(new ActionListener() {
@@ -107,6 +140,7 @@ public class VisualMergeSort extends JFrame {
         });
 
         setVisible(true);
+        setResizable(false);
     }
 
     private void showInfoDialog() {
@@ -156,7 +190,43 @@ public class VisualMergeSort extends JFrame {
                 + "by clearly showing the recursive division and the merging of elements until the array is fully sorted.</p>"
                 + "</body></html>";
 
+        String explanationText = "How Merge Sort Works.Merge Sort is a divide-and-conquer sorting algorithm that efficiently sorts elements by dividing the array into halves, "
+
+                + "recursively sorting each half, and then merging the sorted halves back together. "
+                + "The algorithm follows these steps: "
+                + "Divide:The array is recursively divided into two halves until each sub-array contains a single element. "
+                + "Conquer:Each sub-array is sorted recursively. "
+                + "Merge:The sorted sub-arrays are merged back together to form a single sorted array."
+                +"Base Case:The recursion terminates when the sub-array has one or no elements, which is inherently sorted."
+                +"The provided code visualizes the Merge Sort algorithm by updating the graphical representation of the array during the sorting process. ";
+
+        // Start speech in a new thread so that it begins immediately
+        Thread speechThread = new Thread(() -> speakText(explanationText));
+        speechThread.start();
+
+        // When the dialog is dismissed, cancel the speech if it's still in progress
+
         JOptionPane.showMessageDialog(this, explanation, "How It Works", JOptionPane.INFORMATION_MESSAGE);
+
+        if (currentVoice != null && currentVoice.getAudioPlayer() != null) {
+            currentVoice.getAudioPlayer().cancel();
+        }
+    }
+
+    private void speakText(String text) {
+        // Specify only the Kevin voice directory to avoid casting issues
+        System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+        currentVoice = VoiceManager.getInstance().getVoice("kevin16");
+        if (currentVoice != null) {
+            currentVoice.allocate();
+            currentVoice.setRate(150);   // Speed (default ~160)
+            currentVoice.setPitch(100);  // Adjust pitch
+            currentVoice.setVolume(1.0f); // Volume (0.0 - 1.0)
+            currentVoice.speak(text);
+            currentVoice.deallocate();
+        } else {
+            System.err.println("Voice not found!");
+        }
     }
 
 
@@ -245,16 +315,17 @@ public class VisualMergeSort extends JFrame {
 
     private void displayDivision(int left, int right, int depth) throws InterruptedException {
         SwingUtilities.invokeLater(() -> {
-            int offset = depth * 60; // Move blocks further with increasing depth for breaking
+            int offset = depth * 60; // Move blocks further with increasing depth for division
             int panelWidth = sortingPanel.getWidth();
             int totalBlocksWidth = array.length * BLOCK_SIZE;
             int startX = (panelWidth - totalBlocksWidth) / 2;
 
+            // Move the blocks for this division
             for (int i = left; i <= right; i++) {
                 labels[i].setBounds(startX + i * BLOCK_SIZE, 100 + offset, BLOCK_SIZE, BLOCK_SIZE);
             }
 
-            // Dynamically adjust sorting panel height for deeper levels of recursion
+            // Dynamically adjust the sorting panel height for deeper levels
             int newHeight = (depth + 3) * 60 + 200; // Added 200 to keep space for initial blocks
             sortingPanel.setPreferredSize(new Dimension(panelWidth, newHeight));
             sortingPanel.revalidate();
@@ -263,20 +334,38 @@ public class VisualMergeSort extends JFrame {
         Thread.sleep(DELAY);
     }
 
+    private void addLevelLabels() {
+        int panelWidth = sortingPanel.getWidth();
+        int startX = (panelWidth - array.length * BLOCK_SIZE) / 2 - 110; // Adjust X position for labels
+
+        for (int depth = 0; depth <= maxDepth; depth++) {
+            JLabel levelLabel = new JLabel("Level " + (depth + 1));
+            levelLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            levelLabel.setForeground(Color.RED);
+            levelLabel.setBounds(startX, 100 + depth * 60, 100, BLOCK_SIZE); // Adjust Y position for each level
+            sortingPanel.add(levelLabel);
+        }
+
+        // Adjust the sorting panel height to accommodate all levels
+        int newHeight = (maxDepth + 3) * 60 + 200; // Added 200 to keep space for initial blocks
+        sortingPanel.setPreferredSize(new Dimension(panelWidth, newHeight));
+    }
+
+
     private void displayMerging(int left, int right, int depth) throws InterruptedException {
         SwingUtilities.invokeLater(() -> {
-            int offset = (depth + 1) * 60 + 100; // Move the merging subarrays lower than breaking phase
+            int offset = (depth + 1) * 60 + 100; // move the merging subarrays lower than division phase
             int panelWidth = sortingPanel.getWidth();
             int totalBlocksWidth = array.length * BLOCK_SIZE;
             int startX = (panelWidth - totalBlocksWidth) / 2;
 
-            // Display subarrays
+            // Move the blocks for this merging phase
             for (int i = left; i <= right; i++) {
                 labels[i].setBounds(startX + i * BLOCK_SIZE, offset, BLOCK_SIZE, BLOCK_SIZE);
             }
 
-            // Dynamically adjust sorting panel height for merging
-            int newHeight = offset + 60 + 100; // Added space for merging
+            // Dynamically adjust the sorting panel height for merging
+            int newHeight = offset + 60 + 100; // added space for merging
             sortingPanel.setPreferredSize(new Dimension(panelWidth, newHeight));
             sortingPanel.revalidate();
             sortingPanel.repaint();
@@ -284,12 +373,29 @@ public class VisualMergeSort extends JFrame {
         Thread.sleep(DELAY);
     }
 
+
+
     private void highlightSorted() throws InterruptedException {
+        // Highlight sorted elements in green
         for (int i = 0; i < array.length; i++) {
             labels[i].setBackground(Color.GREEN); // Highlight sorted elements
             updateLabels();
             Thread.sleep(DELAY);
         }
+
+        // Move all blocks back to Level 1
+        SwingUtilities.invokeLater(() -> {
+            int panelWidth = sortingPanel.getWidth();
+            int totalBlocksWidth = array.length * BLOCK_SIZE;
+            int startX = (panelWidth - totalBlocksWidth) / 2;
+
+            for (int i = 0; i < array.length; i++) {
+                labels[i].setBounds(startX + i * BLOCK_SIZE, 100, BLOCK_SIZE, BLOCK_SIZE); // Move to Level 1
+            }
+
+            sortingPanel.revalidate();
+            sortingPanel.repaint();
+        });
     }
 
     private void resetSorting() {

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
-public class VisualInsertionSort extends JFrame {
+public class VisualBubbleSort extends JFrame {
     private static final int BLOCK_SIZE = 50;
     private static final int DELAY = 500; // milliseconds
     private int[] array;
@@ -24,8 +24,8 @@ public class VisualInsertionSort extends JFrame {
     private JScrollPane scrollPane;
     private Voice currentVoice = null;
 
-    public VisualInsertionSort() {
-        setTitle("VizNum - Insertion Sort");
+    public VisualBubbleSort() {
+        setTitle("VizNum - Bubble Sort");
         ImageIcon frameIcon = new ImageIcon(ClassLoader.getSystemResource("Icon/sorting-6.png"));
         setIconImage(frameIcon.getImage());
         setSize(970, 600);
@@ -35,25 +35,23 @@ public class VisualInsertionSort extends JFrame {
         setVisible(true);
         setResizable(false);
 
-
-
         initializeComponents();
         setButtonActions();
     }
 
     private void initializeComponents() {
         inputField = new JTextField(20);
-        startButton = new JButton("Insertion Sort");
+        startButton = new JButton("Bubble Sort");
         resetButton = new JButton("Reset");
         infoButton = new JButton("Time Complexity");
         back = new JButton("Back");
         howItWorksButton = new JButton("How It Works");
         currentElementLabel = new JLabel("Current Element: ", JLabel.CENTER);
 
-        startButton.setToolTipText("Start the sorting process using the Insertion Sort algorithm.");
+        startButton.setToolTipText("Start the sorting process using the Bubble Sort algorithm.");
         resetButton.setToolTipText("Reset the input field and clear the visualization to start over.");
-        infoButton.setToolTipText("View the time and space complexity of the Insertion Sort algorithm.");
-        howItWorksButton.setToolTipText("Learn how the Insertion Sort algorithm works step by step.");
+        infoButton.setToolTipText("View the time and space complexity of the Bubble Sort algorithm.");
+        howItWorksButton.setToolTipText("Learn how the Bubble Sort algorithm works step by step.");
         back.setToolTipText("Return to the main menu.");
 
         inputPanel = new JPanel();
@@ -140,8 +138,8 @@ public class VisualInsertionSort extends JFrame {
 
     private void showInfoDialog() {
         String info = "<html><body>"
-                + "<h2>Insertion Sort Algorithm</h2>"
-                + "<p>Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time.</p>"
+                + "<h2>Bubble Sort Algorithm</h2>"
+                + "<p>Bubble Sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.</p>"
                 + "<h3>Time Complexity:</h3>"
                 + "<ul>"
                 + "<li>Best Case: O(n)</li>"
@@ -154,39 +152,37 @@ public class VisualInsertionSort extends JFrame {
                 + "</ul>"
                 + "</body></html>";
 
-        JOptionPane.showMessageDialog(this, info, "Insertion Sort Info", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, info, "Bubble Sort Info", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void showHowItWorksDialog() {
         String explanation = "<html><body>"
-                + "<h2>How Insertion Sort Works</h2>"
-                + "<p>Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time.</p>"
+                + "<h2>How Bubble Sort Works</h2>"
+                + "<p>Bubble Sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.</p>"
                 + "<p>The algorithm works as follows:</p>"
                 + "<ul>"
-                + "<li><strong>Initial Pass:</strong> The algorithm starts from the second element, comparing it with the elements before it.</li>"
-                + "<li><strong>Shifting:</strong> If the current element (key) is smaller than the compared elements,<br> those elements are shifted one position to the right to make space for the key.</li>"
-                + "<li><strong>Insertion:</strong> Once the correct position for the key is found, it is inserted into that position.</li>"
-                + "<li><strong>Repeat:</strong> This process repeats for each element in the array until the entire array is sorted.</li>"
+                + "<li><strong>Initial Pass:</strong> The algorithm starts from the first element, comparing it with the next element.</li>"
+                + "<li><strong>Swapping:</strong> If the current element is greater than the next element, they are swapped.</li>"
+                + "<li><strong>Repeat:</strong> This process repeats for each pair of adjacent elements until the entire array is sorted.</li>"
                 + "</ul>"
                 + "<h3>About the Code:</h3>"
-                + "<p>The provided code visualizes the Insertion Sort algorithm by updating the graphical representation of the array after each insertion.</p>"
+                + "<p>The provided code visualizes the Bubble Sort algorithm by updating the graphical representation of the array after each swap.</p>"
                 + "<p>Key elements in the code include:</p>"
                 + "<ul>"
                 + "<li><strong>Array Initialization:</strong> The input numbers are read from a text field and stored in an array.</li>"
                 + "<li><strong>Label Creation:</strong> For each element, a label is created to visually represent it in the GUI.</li>"
                 + "<li><strong>Sorting Process:</strong> The sorting logic is implemented in a separate thread to keep the GUI responsive.<br> Each step of the sorting process is visualized with a delay.</li>"
-                + "<li><strong>Color Indication:</strong> The current key being compared is highlighted in yellow,<br> while the sorted elements turn green upon completion.</li>"
+                + "<li><strong>Color Indication:</strong> The elements being compared are highlighted in yellow,<br> while the sorted elements turn orange upon completion.</li>"
                 + "</ul>"
                 + "<p>The visualization helps to understand how the algorithm processes the array and moves elements around until the array is sorted.</p>"
                 + "</body></html>";
 
-        String explanationText = "How Insertion Sort Works. Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time. "
+        String explanationText = "How Bubble Sort Works. Bubble Sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. "
 
-                + "The algorithm starts from the second element, comparing it with the elements before it. "
-                + "If the current element, called the key, is smaller than the compared elements, those elements are shifted one position to the right to make space for the key. "
-                + "Once the correct position is found, the key is inserted. "
-                + "This process repeats for each element until the entire array is sorted. "
-                + "The visualization updates the graphical representation after each insertion step.";
+                + "The algorithm starts from the first element, comparing it with the next element. "
+                + "If the current element is greater than the next element, they are swapped. "
+                + "This process repeats for each pair of adjacent elements until the entire array is sorted. "
+                + "The visualization updates the graphical representation after each swap step.";
 
         // Start speech in a new thread so that it begins immediately
         Thread speechThread = new Thread(() -> speakText(explanationText));
@@ -217,12 +213,10 @@ public class VisualInsertionSort extends JFrame {
         }
     }
 
-
-
     private void startSorting() {
         new Thread(() -> {
             try {
-                insertionSort(array);
+                bubbleSort(array);
                 SwingUtilities.invokeLater(this::highlightSorted);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -230,63 +224,53 @@ public class VisualInsertionSort extends JFrame {
         }).start();
     }
 
-    private void insertionSort(int[] arr) throws InterruptedException {
-        for (int i = 1; i < arr.length; i++) {
-            int key = arr[i];
-            int j = i - 1;
-
-            // Highlight the current key being sorted
-            int finalI = i;
-            SwingUtilities.invokeLater(() -> {
-                labels[finalI].setBackground(Color.YELLOW); // Highlight the current element in yellow
-                currentElementLabel.setText("Current Element: " + key); // Update current element label
-            });
-            Thread.sleep(DELAY);
-
-            while (j >= 0 && arr[j] > key) {
-                // Highlight the element being compared
-                final int currentJ = j; // capture `j` for use in lambda
+    private void bubbleSort(int[] arr) throws InterruptedException {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                // Highlight the elements being compared
+                final int currentJ = j;
+                final int nextJ = j + 1;
                 SwingUtilities.invokeLater(() -> {
-                    labels[currentJ].setBackground(Color.ORANGE); // Compare element
-                    labels[finalI].setBackground(Color.YELLOW); // Keep key highlighted
+                    labels[currentJ].setBackground(Color.YELLOW);
+                    labels[nextJ].setBackground(Color.YELLOW);
+                    currentElementLabel.setText("Comparing: " + arr[currentJ] + " and " + arr[nextJ]);
                 });
                 Thread.sleep(DELAY);
 
-                arr[j + 1] = arr[j];
-                j = j - 1;
+                if (arr[j] > arr[j + 1]) {
+                    // Swap the elements
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
 
-                // Update the array visualization at each step
-                final int[] currentArray = arr.clone();
-                SwingUtilities.invokeLater(() -> updateLabels());
-                Thread.sleep(DELAY);
+                    // Update the array visualization after swapping
+                    SwingUtilities.invokeLater(() -> {
+                        labels[currentJ].setText(String.valueOf(arr[currentJ]));
+                        labels[nextJ].setText(String.valueOf(arr[nextJ]));
+                    });
+                    Thread.sleep(DELAY);
+                }
 
-                // Reset the compared element's color back to cyan
-                SwingUtilities.invokeLater(() -> labels[currentJ].setBackground(Color.CYAN));
+                // Reset the colors after comparison
+                SwingUtilities.invokeLater(() -> {
+                    labels[currentJ].setBackground(Color.CYAN);
+                    labels[nextJ].setBackground(Color.CYAN);
+                });
             }
 
-            arr[j + 1] = key;
+            // Mark the last element as sorted
+            final int sortedIndex = n - i - 1;
+            SwingUtilities.invokeLater(() -> labels[sortedIndex].setBackground(Color.ORANGE));
 
-            // Re-add the labels after placing the key in the correct spot
+            // Move the visualization downwards
+            currentYOffset += BLOCK_SIZE + 10; // Increment Y-offset for the next step
             SwingUtilities.invokeLater(() -> {
-                labels[finalI].setBackground(Color.CYAN); // Reset key color after placing
-                addLabels(arr.clone(), currentYOffset += BLOCK_SIZE + 10); // Move to new Y-offset for the next step
+                addLabels(arr.clone(), currentYOffset); // Re-render the array at the new Y-offset
+                updateSortingPanelSize(); // Update the panel size
             });
             Thread.sleep(DELAY);
         }
-    }
-
-
-    private void updateLabels() {
-        SwingUtilities.invokeLater(() -> {
-            int panelWidth = sortingPanel.getWidth();
-            int totalBlocksWidth = array.length * BLOCK_SIZE;
-            int startX = (panelWidth - totalBlocksWidth) / 2;
-
-            for (int i = 0; i < array.length; i++) {
-                labels[i].setBounds(startX + i * BLOCK_SIZE, currentYOffset, BLOCK_SIZE, BLOCK_SIZE);
-            }
-            updateSortingPanelSize(); // Update sorting panel size after updating labels
-        });
     }
 
     private void highlightSorted() {
@@ -318,7 +302,7 @@ public class VisualInsertionSort extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new VisualInsertionSort().setVisible(true);
+            new VisualBubbleSort().setVisible(true);
         });
     }
 }

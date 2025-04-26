@@ -3,127 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorting Algorithms Visualization</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="icon" href="sort.ico" type="image/ico">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9B5M1T8N72"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-9B5M1T8N72');
-    </script>
+    <title>VizNum - Interactive Sorting Algorithm Visualizer</title>
+    <link rel="icon" href="images/sorting.ico" type="image/x-icon"> <!-- Favicon link -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <header>
-        <div class="header-content">
-            <img src="sort.ico" alt="Sorting Algorithms Logo" class="header-img">
-            <h1>Sorting Algorithms Visualization</h1>
-        </div>
-        <div class="marquee-container">
-            <p class="marquee">Explore Efficient Sorting Algorithms with Interactive Visualizations!</p>
+        <div class="container">
+            <nav>
+                <div class="logo">Viz<span>Num</span></div>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#algorithms">Algorithms</a>
+                    <a href="#screenshots">Screenshots</a>
+                    <a href="#guide">How to Use</a>
+                    <a href="#download">Download</a>
+                </div>
+                <a href="#download" class="btn btn-link">Get VizNum</a>
+            </nav>
         </div>
     </header>
-
-    <div class="container">
-        <section id="about">
-            <h2>About the Application</h2>
-            <p>The Sorting Algorithms Visualization project is a Java-based application that beautifully demonstrates various sorting algorithms. Using Java Swing for dynamic visualizations, this project brings sorting algorithms to life—showing how data is ordered step-by-step with smooth animations.</p>
-            <p>For more details and to view the source code, visit: <a class="repo-link1" href="https://github.com/Kvr-10/Sorting-Algorithms" target="_blank"><b>GitHub repository</b></a></p>
-        </section>
-
-        <section id="features">
-            <h2>Features</h2>
-            <ul>
-                <li><strong>Insertion Sort:</strong> A simple, intuitive algorithm that sorts by gradually building the final sorted array.</li>
-                <li><strong>Quick Sort:</strong> A fast and efficient algorithm that uses divide and conquer to sort the data.</li>
-                <li><strong>Merge Sort:</strong> A powerful, stable sorting technique that divides the array into halves and merges them after sorting.</li>
-                <li><strong>Visual Appeal:</strong> The real-time animations make understanding sorting algorithms fun and engaging.</li>
-                <li><strong>User-Friendly Interface:</strong> Easy-to-use GUI created using Java Swing.</li>
-            </ul>
-        </section>
-        
-        <section id="skills">
-            <h2>Skills</h2>
-            <ul>
-                <li><strong>Java Programming:</strong> Core programming language for algorithm implementation and visualization.</li>
-                <li><strong>GUI Development:</strong> Developed an interactive and dynamic user interface using Java Swing.</li>
-                <li><strong>Algorithm Optimization:</strong> Efficiently implemented sorting algorithms with performance in mind.</li>
-                <li><strong>Data Visualization:</strong> The real-time display of sorting steps helps users visualize the sorting process clearly.</li>
-            </ul>
-        </section>
-
-        <section id="setup">
-            <h2>How to Run the Application</h2>
-            <div class="steps">
-                <div class="step">
-                    <h3>1. Clone the Repository</h3>
-                    <p class="clone-command"><code>git clone https://github.com/Kvr-10/Sorting-Algorithms.git</code></p>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>See, Sort & Learn Sorting Algorithms</h1>
+            <p>VizNum is an interactive educational tool that brings sorting algorithms to life through dynamic visualizations and step-by-step animations.</p>
+            <div class="hero-btns">
+                <a href="#download" class="btn">Download Now</a>
+                <a href="#demo" class="btn btn-outline">Watch Demo</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Powerful Learning Features</h2>
+                <p>VizNum provides an immersive learning experience with these key features</p>
+            </div>
+            <div class="features-grid">
+                <!-- Feature cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+    
+    <section class="algorithms" id="algorithms">
+        <div class="container">
+            <div class="section-title">
+                <h2>Supported Sorting Algorithms</h2>
+                <p>VizNum currently visualizes these fundamental sorting algorithms</p>
+            </div>
+            <div class="algorithms-grid">
+                <!-- Algorithm cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+    
+    <section class="screenshots" id="screenshots">
+        <div class="container">
+            <div class="section-title">
+                <h2>Application Screenshots</h2>
+                <p>See the VizNum interface and visualizations in action</p>
+            </div>
+            <div class="screenshot-gallery">
+                <!-- Row 1 -->
+                <div class="screenshot-row">
+                    <div class="screenshot-container">
+                        <img src="images/main-interface.png" alt="VizNum Main Interface" class="screenshot-img">
+                        <p class="screenshot-caption">Main Interface with Algorithm Selection</p>
+                    </div>
+                    <div class="screenshot-container">
+                        <img src="images/Insertion-sort.png" alt="Insertion Sort Visualization" class="screenshot-img">
+                        <p class="screenshot-caption">Insertion Sort Visualization</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <h3>2. Navigate to the Project Directory</h3>
-                    <p class="directory-path"><code>Sorting-Algorithms/out/artifacts/Sortings_jar/Sortings.jar</code></p>
+                
+                <!-- Row 2 -->
+                <div class="screenshot-row">
+                    <div class="screenshot-container">
+                        <img src="images/quick-sort.png" alt="Quick Sort Visualization" class="screenshot-img">
+                        <p class="screenshot-caption">Quick Sort Visualization</p>
+                    </div>
+                    <div class="screenshot-container">
+                        <img src="images/merge-sort.png" alt="Merge Sort Visualization" class="screenshot-img">
+                        <p class="screenshot-caption">Merge Sort Visualization</p>
+                    </div>
                 </div>
-                <div class="step1">
-                    <h3>3. Run the Application</h3>
-                    <p>Locate the <code>Sortings.jar</code> file in the directory.</p>
-                    <p>Double-click on <code>Sortings.jar</code> to start the visualization.</p>
+                
+                <!-- Row 3 -->
+                <div class="screenshot-row">
+                    <div class="screenshot-container">
+                        <img src="images/bubble-sort.png" alt="Bubble Sort Visualization" class="screenshot-img">
+                        <p class="screenshot-caption">Bubble Sort Visualization</p>
+                    </div>
+                    <div class="screenshot-container">
+                        <img src="images/controls.png" alt="Application Controls" class="screenshot-img">
+                        <p class="screenshot-caption">Interactive Controls Panel</p>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <section id="alternative" class="alternative-section">
-            <h2>Alternative</h2>
-            <p>You can directly download the JAR file from the Releases page and run it:</p>
-            <div class="button-container">
-                <a class="download-link" href="https://github.com/Kvr-10/Sorting-Algorithms/releases/latest" target="_blank" download><b>Visit Releases</b></a>
-                <a class="download-link" href="https://github.com/Kvr-10/Sorting-Algorithms/releases/latest/download/Sortings.jar" download><b>Download Sorting Application</b></a>
+        </div>
+    </section>
+    
+    <section class="guide" id="guide">
+        <div class="container">
+            <div class="section-title">
+                <h2>How to Use VizNum</h2>
+                <p>Follow these steps to get started with the sorting algorithm visualizer</p>
             </div>
-        </section>
-
-        <section id="contributing">
-            <h2>Contributing</h2>
-            <p>We welcome contributions to improve the project! Feel free to open issues and submit pull requests.</p>
-        </section>
-    </div>
-
+            <div class="guide-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Download and Install</h3>
+                        <p>Download the VizNum.exe file from our website and run the installer. No additional dependencies are required.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Launch the Application</h3>
+                        <p>Open VizNum from your Start menu or desktop shortcut. The application will load immediately with a default dataset.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Select an Algorithm</h3>
+                        <p>Choose from the available sorting algorithms on the main-screen menu. Each selection will display a brief description.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Customize Your Dataset</h3>
+                        <p>Enter numbers directly in the input field (comma separated, e.g., "5,2,9,1,7")</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Start Visualization</h3>
+                        <p>Click "Sort" to begin the animation. The current element being processed is highlighted in real-time with distinct colors, while the final sorted array is displayed in green when complete.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>Explore Learning Resources</h3>
+                        <p>Click "How It Works" for step-by-step explanations or "Time Complexity" to understand algorithm performance characteristics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="requirements">
+        <div class="container">
+            <div class="section-title">
+                <h2>System Requirements</h2>
+                <p>Ensure your system meets these requirements for optimal performance</p>
+            </div>
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <i class="fas fa-desktop"></i>
+                    <h3>Minimum</h3>
+                    <ul>
+                        <li>Windows 10 (64-bit)</li>
+                        <li>Dual-core 1.8GHz CPU</li>
+                        <li>4GB RAM</li>
+                        <li>200MB disk space</li>
+                        <li>DirectX 10 compatible GPU</li>
+                    </ul>
+                </div>
+                <div class="requirement-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Recommended</h3>
+                    <ul>
+                        <li>Windows 10/11 (64-bit)</li>
+                        <li>Quad-core 2.5GHz CPU</li>
+                        <li>8GB RAM</li>
+                        <li>500MB disk space</li>
+                        <li>DirectX 12 compatible GPU</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="demo" id="demo">
+        <div class="container">
+            <div class="section-title">
+                <h2>See VizNum in Action</h2>
+                <p>Watch our demonstration video to see how VizNum makes learning sorting algorithms intuitive</p>
+            </div>
+            <div class="demo-container">
+                <div class="demo-text">
+                    <h3>Interactive Learning Experience</h3>
+                    <p>VizNum transforms abstract algorithms into tangible visual processes. Our demonstration shows how you can:</p>
+                    <ul>
+                        <li>Watch real-time sorting with clear color indicators showing current operations</li>
+                        <li>Observe the step-by-step comparison and swapping of elements</li>
+                        <li>View algorithm explanations with audio narration</li>
+                        <li>Reset the visualization to watch the process again</li>
+                        <li>Compare different algorithms on the same dataset</li>
+                    </ul>
+                </div>
+                <div class="demo-video">
+                    <div class="video-wrapper">
+                        <iframe width="560" height="315" 
+                            src="https://www.youtube.com/embed/mCN4U1_F3e4" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </section>
+    
+    <section class="download" id="download">
+        <div class="container">
+            <h2>Ready to Visualize Sorting Algorithms?</h2>
+            <p>Download VizNum today and transform how you learn and understand sorting algorithms. The standalone executable works on any Windows machine without requiring Java installation.</p>
+            <div class="download-btns">
+                <a href="https://github.com/Kvr-10/Sorting-Algorithms/releases/download/v4.0/Viznum_setup.exe" class="btn" id="download-btn">Download VizNum(exe)</a>
+                <a href="https://github.com/Kvr-10/Sorting-Algorithms" class="btn btn-outline">View Documentation</a>
+            </div>
+            <div class="download-info">
+                <p><i class="fas fa-download"></i> File size: ~170MB</p>
+                <p><i class="fas fa-windows"></i> Windows 10/11</p>
+                <p><i class="fas fa-tag"></i> Version 4.0.0.1</p>
+            </div>
+        </div>
+    </section>
+    
     <footer>
-        <h2>Contact Us</h2>
-        <div class="contacts">
-            <div class="contact-item">
-                <p><strong>Chaman Sinha</strong><br>
-                    <a href="mailto:chamansinha9480@gmail.com">chamansinha9480@gmail.com</a><br>
-                    <a href="https://github.com/Kvr-10" target="_blank">@chaman_github</a>
-                </p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>VizNum</h3>
+                    <p>An interactive educational tool for visualizing and learning sorting algorithms through dynamic animations.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Kvr-10"><i class="fab fa-github"></i></a>
+                        <a href="https://www.youtube.com/@chamansinha9507"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/in/chaman-sinha/"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="https://github.com/Kvr-10/Sorting-Algorithms" target="_blank">Documentation</a></li>
+                        <li><a href="https://www.geeksforgeeks.org/sorting-algorithms/" target="_blank">Algorithm References</a></li>
+                        <li><a href="https://visualgo.net/en/sorting" target="_blank">Teaching Materials</a></li>
+                        <li><a href="https://github.com/Kvr-10/Sorting-Algorithms" target="_blank">Source Code (Java)</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="https://github.com/Kvr-10/Sorting-Algorithms/issues" target="_blank">FAQ</a></li>
+                        <li><a href="https://github.com/Kvr-10/Sorting-Algorithms/issues/new" target="_blank">Report Issues</a></li>
+                        <li><a href="mailto:chamansinha9480@gmail.com" target="_blank">Contact Developer</a></li>
+                        <li><a href="https://github.com/Kvr-10/Sorting-Algorithms/issues/new" target="_blank">Feature Requests</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="contact-item">
-                <p><strong>Aryan Sharma</strong><br>
-                    <a href="mailto:sharmaaryan1603@gmail.com">sharmaaryan1603@gmail.com</a><br>
-                    <a href="https://github.com/ARYANSHARMA01-tech" target="_blank">@aryan_github</a>
-                </p>
-            </div>
-            <div class="contact-item">
-                <p><strong>Tanmay Malav</strong><br>
-                    <a href="mailto:malavtanmay123@gmail.com">malavtanmay123@gmail.com</a><br>
-                    <a href="https://GitHub.com/Tanmay-1007" target="_blank">@tanmay_github</a>
-                </p>
-            </div>
-            <div class="contact-item">
-                <p><strong>Pranav Hendre</strong><br>
-                    <a href="mailto:pranavhendre07@gmail.com">pranavhendre07@gmail.com</a><br>
-                    <a href="https://github.com/PranavHendre02" target="_blank">@pranav_github</a>
-                </p>
-            </div>
-            <div class="contact-item">
-                <p><strong>Soumyajit Khan</strong><br>
-                    <a href="mailto:quicksjit15@gmail.com">quicksjit15@gmail.com</a><br>
-                    <a href="https://github.com/SkyRanger15" target="_blank">@soumyajit_github</a>
-                </p>
+            <div class="copyright">
+                <p>© 2025 VizNum. All Rights Reserved<br></p>
             </div>
         </div>
     </footer>
-    
 
+    <script src="script.js"></script>
 </body>
 </html>
