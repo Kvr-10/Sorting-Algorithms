@@ -3,6 +3,17 @@
 
 Welcome to the Viznum project! ✨ This interactive Java-based application offers an engaging and intuitive way to explore and understand the inner workings of various sorting algorithms. Experience sorting techniques in real-time, with step-by-step visualizations that make learning algorithms both fun and educational! �📊
 
+## 🚀 Demo
+
+> **🎥 Click to watch the demo:**  
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=mCN4U1_F3e4" target="_blank">
+    <img src="docs/images/main-interface.png" alt="Watch the demo" style="width: 80%; max-width: 600px;" />
+  </a>
+</p>
+
+---
+
 ## How to Run the Application ⚙️
 
 ### 1️⃣ Clone the Repository:
