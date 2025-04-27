@@ -48,16 +48,16 @@ Ensure you have Java installed on your system. You can download and install the 
 - 🟢 **Sorted Elements** (Marked in green when in place)
 
 ### ⚡ Real-Time Animations
-Smooth, dynamic visuals to easily follow the sorting process!
+- Smooth, dynamic visuals to easily follow the sorting process!
 
 ### 🖥️ User-Friendly Interface
-Built with Java Swing for a clean and intuitive experience!
+- Built with Java Swing for a clean and intuitive experience!
 
 ### 🔢 Customizable Input
-Test algorithms with your own datasets!
+- Test algorithms with your own datasets!
 
 ### ⏱️ Algorithm Complexity Visualization
-See how time complexity plays out in real-time!
+- See how time complexity plays out in real-time!
 
 ## 📸 Application Screenshots
 
